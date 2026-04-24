@@ -236,3 +236,70 @@ npm run build
 ## License
 
 开源前请根据你的发布计划补充许可证文件，例如 MIT、Apache-2.0 或其他许可证。
+
+## 单机 Docker Compose（个人 Demo）
+
+如果你只是个人演示或自用，可以直接使用根目录的 `docker-compose.yml` 同时启动前后端，后端使用本地 `SQLite + Qdrant local mode`，只需要一个持久化卷保存数据。
+
+### 1. 准备环境变量
+
+可以直接在执行命令前导出，或在 Coolify 中填写：
+
+```bash
+export AUTH_SECRET_KEY='replace-with-a-random-secret'
+export SILICONFLOW_API_KEY='your-siliconflow-key'
+export OPENAI_LLM_API_KEY='your-openai-key'
+export VITE_API_BASE_URL='http://localhost:8000/api/v1'
+```
+
+如果前端和后端会分别挂到不同域名，请把 `VITE_API_BASE_URL` 换成后端公网地址，并同步修改后端 `CORS_ORIGINS`。
+
+### 2. 启动服务
+
+```bash
+cd agent-demo
+docker compose up --build -d
+```
+
+启动后默认地址：
+
+- 前端：`http://127.0.0.1:8080`
+- 后端 API：`http://127.0.0.1:8000`
+- OpenAPI：`http://127.0.0.1:8000/docs`
+
+### 3. 数据持久化
+
+`docker-compose.yml` 中已经声明卷 `api_storage`，会保存：
+
+- SQLite 数据库文件
+- Qdrant 本地索引文件
+- 上传文档和处理中间文件
+
+迁移到 Coolify 时，给 `api` 服务挂载持久化卷到 `/app/storage` 即可。
+
+### 4. 使用 `.env` 文件（推荐）
+
+```bash
+cd agent-demo
+cp .env.example .env
+# 按需修改里面的 key 和地址
+
+docker compose --env-file .env up --build -d
+```
+
+### 5. 在 Coolify 里怎么用这个 compose
+
+如果你想在 Coolify 里直接使用这个根目录编排文件，可以这样配：
+
+- 选择 `Docker Compose` 部署方式
+- Compose 文件使用 `agent-demo/docker-compose.yml`
+- 在环境变量中填写 `.env.example` 里的 key
+- 给 `api` 服务挂持久化卷到 `/app/storage`
+- 对外暴露：前端 `80`，后端如果不想直接暴露也可以只走内网
+
+更推荐的域名方式：
+
+- `web` 绑一个域名，例如 `rag.your-domain.com`
+- `api` 可不单独暴露；若需要调试再绑 `api.your-domain.com`
+
+如果前端通过公网域名访问后端，记得把 `VITE_API_BASE_URL` 改成真实后端地址，并把 `CORS_ORIGINS` 改成前端实际域名。

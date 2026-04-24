@@ -1,0 +1,45 @@
+services:
+  api:
+    build:
+      context: ./server
+    environment:
+      APP_ENV: prod
+      API_PREFIX: /api/v1
+      DATABASE_URL: sqlite:///./storage/enterprise_rag.db
+      DATABASE_SCHEMA_STRATEGY: auto
+      WORKFLOW_CHECKPOINTER_BACKEND: auto
+      QDRANT_USE_LOCAL: "true"
+      QDRANT_PATH: ./storage/qdrant
+      QDRANT_COLLECTION_NAME: document_chunks
+      STORAGE_ROOT: ./storage
+      CORS_ORIGINS: '["http://localhost:8080","https://localhost:8080"]'
+      AUTH_SECRET_KEY: ${AUTH_SECRET_KEY:-change-this-in-production}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-openai}
+      OPENAI_EMBEDDING_MODEL_NAME: ${OPENAI_EMBEDDING_MODEL_NAME:-BAAI/bge-large-zh-v1.5}
+      OPENAI_EMBEDDING_DIMENSIONS: ${OPENAI_EMBEDDING_DIMENSIONS:-1024}
+      OPENAI_EMBEDDING_BASE_URL: ${OPENAI_EMBEDDING_BASE_URL:-https://api.siliconflow.cn/v1}
+      OPENAI_EMBEDDING_API_KEY: ${OPENAI_EMBEDDING_API_KEY:-}
+      OPENAI_EMBEDDING_API_KEY_ENV_VAR: ${OPENAI_EMBEDDING_API_KEY_ENV_VAR:-SILICONFLOW_API_KEY}
+      LLM_PROVIDER: ${LLM_PROVIDER:-openai}
+      OPENAI_LLM_MODEL_NAME: ${OPENAI_LLM_MODEL_NAME:-gpt-4o-mini}
+      OPENAI_LLM_BASE_URL: ${OPENAI_LLM_BASE_URL:-https://api.openai.com/v1}
+      OPENAI_LLM_API_KEY: ${OPENAI_LLM_API_KEY:-}
+      OPENAI_LLM_API_KEY_ENV_VAR: ${OPENAI_LLM_API_KEY_ENV_VAR:-}
+      SILICONFLOW_API_KEY: ${SILICONFLOW_API_KEY:-}
+    ports:
+      - "8000:8000"
+    volumes:
+      - api_storage:/app/storage
+
+  web:
+    build:
+      context: ./web
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000/api/v1}
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+
+volumes:
+  api_storage:
