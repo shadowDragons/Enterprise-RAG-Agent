@@ -1,0 +1,57 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: enterprise_rag
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: rag
+    ports:
+      - "54329:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d enterprise_rag"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  api:
+    build:
+      context: .
+    environment:
+      APP_ENV: prod
+      API_PREFIX: /api/v1
+      DEFAULT_STAGE: P3
+      DATABASE_URL: postgresql+psycopg://rag:rag@postgres:5432/enterprise_rag
+      DATABASE_SCHEMA_STRATEGY: migrate
+      DATABASE_POOL_SIZE: 10
+      DATABASE_MAX_OVERFLOW: 20
+      DATABASE_POOL_TIMEOUT: 30
+      WORKFLOW_CHECKPOINTER_BACKEND: postgres
+      WORKFLOW_CHECKPOINTER_POSTGRES_URL: postgresql://rag:rag@postgres:5432/enterprise_rag
+      QDRANT_USE_LOCAL: "false"
+      QDRANT_URL: http://qdrant:6333
+      STORAGE_ROOT: /app/storage
+      CORS_ORIGINS: '["http://localhost:5175","http://127.0.0.1:5175"]'
+      OPENAI_EMBEDDING_API_KEY_ENV_VAR: SILICONFLOW_API_KEY
+      OPENAI_LLM_API_KEY_ENV_VAR: SILICONFLOW_API_KEY
+      SILICONFLOW_API_KEY: ${SILICONFLOW_API_KEY:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+    ports:
+      - "8000:8000"
+    volumes:
+      - api_storage:/app/storage
+
+volumes:
+  postgres_data:
+  qdrant_data:
+  api_storage:

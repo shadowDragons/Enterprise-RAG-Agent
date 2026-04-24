@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "enterprise-rag-agent-demo"
+version = "0.1.0"
+description = "面向中文用户的企业级 RAG 项目骨架，基于 FastAPI、LangGraph、LlamaIndex 和 AutoGen。"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "langchain>=0.3.0",
+    "langgraph>=0.2.0",
+    "llama-index-core>=0.12.0",
+    "llama-index-vector-stores-qdrant>=0.10.0",
+    "pypdf>=5.0.0",
+    "python-docx>=1.1.0",
+    "psycopg[binary]>=3.2.0",
+    "pydantic-settings>=2.4.0",
+    "python-multipart>=0.0.12",
+    "qdrant-client>=1.12.0",
+    "sqlalchemy>=2.0.0",
+    "uvicorn[standard]>=0.30.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.28.0",
+    "pytest>=8.0.0",
+    "ruff>=0.8.0",
+]
+prod = [
+    "alembic>=1.13.0",
+    "langgraph-checkpoint-postgres",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

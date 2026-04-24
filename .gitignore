@@ -1,0 +1,14 @@
+.DS_Store
+
+server/.venv/
+server/.env
+server/__pycache__/
+server/.pytest_cache/
+server/.ruff_cache/
+server/**/*.pyc
+server/*.egg-info/
+server/storage/
+
+web/node_modules/
+web/.env
+web/dist/
