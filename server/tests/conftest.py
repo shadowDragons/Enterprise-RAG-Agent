@@ -24,6 +24,8 @@ os.environ["QDRANT_PATH"] = str(_TEST_QDRANT_ROOT)
 os.environ["QDRANT_COLLECTION_NAME"] = "document_chunks_test"
 os.environ["EMBEDDING_PROVIDER"] = "local"
 os.environ["LLM_PROVIDER"] = "local"
+os.environ["LLM_ALLOWED_MODELS"] = '["gpt-4o-mini","gpt-4o","gpt-4.1"]'
+os.environ["OPENAI_LLM_MODEL_NAME"] = "gpt-4o-mini"
 os.environ["AUTH_ENABLED"] = "false"
 
 get_settings.cache_clear()

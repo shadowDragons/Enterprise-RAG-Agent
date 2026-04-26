@@ -148,7 +148,7 @@ def test_restore_assistant_version_creates_new_current_version(client: TestClien
     assert data["assistant_name"] == "回滚助理"
     assert data["default_model"] == "gpt-4o"
     assert data["review_enabled"] is False
-        assert data["version"] == 3
+    assert data["version"] == 3
 
     versions_response = client.get(f"/api/v1/assistants/{assistant_id}/versions")
     assert versions_response.status_code == 200

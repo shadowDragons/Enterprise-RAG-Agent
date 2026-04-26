@@ -16,4 +16,5 @@ class Assistant(TimestampMixin, Base):
     tool_keys: Mapped[list[str]] = mapped_column(JSON, default=list, nullable=False)
     review_rules: Mapped[list[dict]] = mapped_column(JSON, default=list, nullable=False)
     review_enabled: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    multi_agent_enabled: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     version: Mapped[int] = mapped_column(default=1, nullable=False)

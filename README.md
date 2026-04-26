@@ -19,15 +19,15 @@
 
 ## 技术栈
 
-| 模块 | 技术 |
-| --- | --- |
-| 前端 | Vue 3、TypeScript、Vite、Element Plus、Pinia |
-| 后端 | FastAPI、SQLAlchemy、Pydantic Settings、Uvicorn |
-| 工作流 | LangGraph |
-| RAG | LlamaIndex 分块、Qdrant 向量库、混合检索 |
-| 数据库 | 开发环境 SQLite，生产环境推荐 PostgreSQL |
-| 文档解析 | pypdf、python-docx、antiword |
-| 部署 | Docker、Docker Compose、Alembic |
+| 模块     | 技术                                            |
+| -------- | ----------------------------------------------- |
+| 前端     | Vue 3、TypeScript、Vite、Element Plus、Pinia    |
+| 后端     | FastAPI、SQLAlchemy、Pydantic Settings、Uvicorn |
+| 工作流   | LangGraph                                       |
+| RAG      | LlamaIndex 分块、Qdrant 向量库、混合检索        |
+| 数据库   | 开发环境 SQLite，生产环境推荐 PostgreSQL        |
+| 文档解析 | pypdf、python-docx、antiword                    |
+| 部署     | Docker、Docker Compose、Alembic                 |
 
 ## 项目结构
 
@@ -62,7 +62,7 @@ agent-demo/
 ### 1. 启动后端
 
 ```bash
-cd agent-demo/server
+cd server
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
@@ -92,11 +92,11 @@ npm run dev
 
 开发环境内置演示账号，仅用于本地体验，请勿用于生产环境：
 
-| 角色 | 用户名 | 密码 | 说明 |
-| --- | --- | --- | --- |
-| 管理员 | `admin` | `admin123456` | 配置管理、运营处理、聊天 |
-| 运营 | `operator` | `operator123456` | 运营处理、聊天 |
-| 访客 | `viewer` | `viewer123456` | 只读聊天 |
+| 角色   | 用户名     | 密码             | 说明                     |
+| ------ | ---------- | ---------------- | ------------------------ |
+| 管理员 | `admin`    | `admin123456`    | 配置管理、运营处理、聊天 |
+| 运营   | `operator` | `operator123456` | 运营处理、聊天           |
+| 访客   | `viewer`   | `viewer123456`   | 只读聊天                 |
 
 登录后可以创建知识库、上传文档、配置助理并开始问答。
 
@@ -173,18 +173,18 @@ npm run preview
 
 后端默认 API 前缀为 `/api/v1`。
 
-| 能力 | 路径 |
-| --- | --- |
-| 登录与当前用户 | `/auth/login`、`/auth/me` |
-| 助理管理 | `/assistants` |
-| 知识库管理 | `/knowledge-bases` |
-| 文档上传与删除 | `/knowledge-bases/{id}/documents` |
-| 会话管理 | `/sessions` |
-| 聊天流式问答 | `/sessions/{session_id}/chat/stream` |
-| 任务中心 | `/jobs` |
-| 审核任务 | `/reviews` |
-| 系统总览 | `/system/overview` |
-| 健康检查 | `/health` |
+| 能力           | 路径                                 |
+| -------------- | ------------------------------------ |
+| 登录与当前用户 | `/auth/login`、`/auth/me`            |
+| 助理管理       | `/assistants`                        |
+| 知识库管理     | `/knowledge-bases`                   |
+| 文档上传与删除 | `/knowledge-bases/{id}/documents`    |
+| 会话管理       | `/sessions`                          |
+| 聊天流式问答   | `/sessions/{session_id}/chat/stream` |
+| 任务中心       | `/jobs`                              |
+| 审核任务       | `/reviews`                           |
+| 系统总览       | `/system/overview`                   |
+| 健康检查       | `/health`                            |
 
 完整接口请访问启动后的 OpenAPI 文档：`http://127.0.0.1:8000/docs`。
 
